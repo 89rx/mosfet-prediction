@@ -22,20 +22,20 @@ The `mosfet_prediction.ipynb` notebook clones this repository directly to load t
 
 The end-to-end workflow is implemented in the Jupyter notebook and follows these key steps:
 
-1.  **Data Loading & Filtering:** * Loads `*.json` simulation files from the MESD dataset.
+1.  **Data Loading & Filtering:**  Loads `*.json` simulation files from the MESD dataset.
     * Filters data to include only devices with Process Corner = `tt` (Typical-Typical).
     * Removes curves that are flat lines or invalid.
-2.  **Label Extraction:** * The "ground truth" $V_{th}$ for each curve is extracted using the **2nd Derivative Method**, which finds the peak of the second derivative of $log(I_D)$ with respect to $V_{GS}$.
-3.  **Target Normalization:** * To make the model agnostic to specific voltage sweeps, the extracted $V_{th}$ is converted into a normalized **Threshold Ratio ($R_{th}$)** between 0 and 1.
+2.  **Label Extraction:**  The "ground truth" $V_{th}$ for each curve is extracted using the **2nd Derivative Method**, which finds the peak of the second derivative of $log(I_D)$ with respect to $V_{GS}$.
+3.  **Target Normalization:**  To make the model agnostic to specific voltage sweeps, the extracted $V_{th}$ is converted into a normalized **Threshold Ratio ($R_{th}$)** between 0 and 1.
     $$R_{th} = \frac{V_{th} - V_{G,min}}{V_{G,max} - V_{G,min}}$$
-4.  **Feature Engineering:** * The $I_{D}-V_{G}$ input curves are processed into a fixed-length feature vector of **50 points**.
+4.  **Feature Engineering:**  The $I_{D}-V_{G}$ input curves are processed into a fixed-length feature vector of **50 points**.
     * $V_{GS}$ is normalized to [0, 1].
     * Current is transformed to $log_{10}(|I_{D}|)$ and interpolated to a fixed axis.
     * The resulting vector is min-max scaled.
-5.  **Device-Specific Training:** * The dataset is split by **Device Type** (NMOS and PMOS).
+5.  **Device-Specific Training:**  The dataset is split by **Device Type** (NMOS and PMOS).
     * Separate models are trained for each device type to maximize accuracy.
     * Algorithms used: **k-Nearest Neighbors (kNN)** and **Decision Tree Regressor**.
-6.  **Prediction & Denormalization:** * The system predicts the ratio $R_{th}$ and mathematically converts it back to the physical voltage $V_{th}$ using the input curve's voltage range.
+6.  **Prediction & Denormalization:**  The system predicts the ratio $R_{th}$ and mathematically converts it back to the physical voltage $V_{th}$ using the input curve's voltage range.
 
 ---
 
@@ -52,9 +52,6 @@ The dataset was split into 70% training and 30% testing. The **k-Nearest Neighbo
 | **PMOS** | **kNN** | **0.0207** | **0.0043** | **0.9675** |
 | PMOS | Decision Tree | 0.0339 | 0.0133 | 0.9126 |
 
-### Validation
-A random sample validation of 100 curves was performed using the trained kNN models.
-* **Accuracy:** 95% of predictions were within a tolerance of **0.001 V (1 mV)** of the calculated ground truth.
 
 ---
 
