@@ -14,7 +14,7 @@ The project uses the **MESD (MOSFET Electrical Simulation Dataset)**, an open-so
 
 * **Source:** [SJTU-YONGFU-RESEARCH-GRP/MESD-MOSFET-Electrical-Simulation-Dataset](https://github.com/SJTU-YONGFU-RESEARCH-GRP/MESD-MOSFET-Electrical-Simulation-Dataset)
 
-The `mosfet_prediction.ipynb` notebook clones this repository directly to load the data.
+The `mosfet_prediction_universal.ipynb` notebook clones this repository directly to load the data.
 
 ---
 
